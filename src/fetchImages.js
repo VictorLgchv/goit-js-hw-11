@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://pixabay.com/api';
+const BASE_URL = 'https://pixabay.com/api/';
 const API_KEY = '34737052-b22dcc77d23fc25c00a98711a';
 async function fetchImages(serachArray, page) {
   const options = {
     params: {
-      key: '34737052-b22dcc77d23fc25c00a98711a',
+      key: `${API_KEY}`,
       q: `${serachArray}`,
       image_type: 'photo',
       orientation: 'horizontal',
