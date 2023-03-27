@@ -2,7 +2,9 @@
 @import './example';
 
 .search {
-  
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
   
 }
 
@@ -20,11 +22,36 @@
 
 .search__btn {}
 
+
+
 .gallery{
-  // display: flex;
-  
+  margin: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.photo-card{
+  width: calc((100% - 60px)/ 4)
+}
+
+.photo-card img{
+  width: 100%;
+}
+
+.load-more{
+  display: block;
+  margin: 10 auto;
+  padding: 8px 33px;
+  background: blue;
+  border-radius: 12px;
+  cursor: pointer;
+  color: white;
+
 }
 
 .btn__hidden{
- display: none;
-}
+  display: none;
+ }
