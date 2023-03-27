@@ -5,32 +5,25 @@ const refs = {
   listEl: document.querySelector('.gallery'),
   btnLoadMore: document.querySelector('.load-more'),
 };
-refs.btnLoadMore.classList.add("btn__hidden")
-
+let numberPage = 1;
+refs.btnLoadMore.classList.add('btn__hidden');
 refs.formEl.addEventListener('submit', onFormSubmit);
+
 
 
 function onFormSubmit(evt) {
   evt.preventDefault();
   refs.listEl.innerHTML = '';
-  let numberPage = 1;
-  console.log(numberPage)
+  numberPage = 1;
+  refs.btnLoadMore.addEventListener('click', onBtnLoadMoreClick);
   const { searchQuery } = evt.target.elements;
   const searchName = searchQuery.value.trim();
 
-  callFetchImages(searchName, searchName);
-  refs.btnLoadMore.classList.remove("btn__hidden")
-  refs.btnLoadMore.addEventListener('click', onBtnLoadMoreClick)
-  
-  function onBtnLoadMoreClick(evt) {
-    
-    numberPage += 1;
-    callFetchImages(searchName, numberPage);
-    console.log(numberPage)
-  }
+  callFetchImages(searchName, numberPage);
 }
 
 async function callFetchImages(searchName, numberPage) {
+
   try {
     const { hits } = await API.fetchImages(searchName, numberPage);
     const serachArray = hits;
@@ -41,6 +34,11 @@ async function callFetchImages(searchName, numberPage) {
       );
       return;
     }
+   
+    if (serachArray.length < 40) {
+      refs.btnLoadMore.classList.remove('btn__hidden');
+    }
+    
     renderImages(serachArray);
   } catch (error) {
     console.log(error);
@@ -85,4 +83,22 @@ function renderImages(serachArray) {
   refs.listEl.insertAdjacentHTML('beforeend', createImages(serachArray));
 }
 
-
+async function onBtnLoadMoreClick(evt) {
+  numberPage += 1;
+  refs.btnLoadMore.classList.add('btn__hidden');
+  const searchValue = refs.formEl.searchQuery.value.trim()
+  try {
+    const { hits } = await API.fetchImages(searchValue, numberPage);
+    const serachArray = hits;
+   
+    if (serachArray.length < 40) {
+      refs.btnLoadMore.classList.remove('btn__hidden');
+    }
+    
+    renderImages(serachArray);
+  } catch (error) {
+    console.log(error);
+  }
+  // callFetchImages(searchName, numberPage);
+  console.log(numberPage);
+}
