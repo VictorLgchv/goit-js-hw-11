@@ -25,9 +25,10 @@ function onFormSubmit(evt) {
 async function callFetchImages(searchName, numberPage) {
 
   try {
-    const { hits } = await API.fetchImages(searchName, numberPage);
+    const response = await API.fetchImages(searchName, numberPage);
+    const { hits } = response;
     const serachArray = hits;
-
+    // console.log(response)
     if (serachArray.length === 0) {
       Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
@@ -35,7 +36,7 @@ async function callFetchImages(searchName, numberPage) {
       return;
     }
    
-    if (serachArray.length < 40) {
+    if (response.total > 40) {
       refs.btnLoadMore.classList.remove('btn__hidden');
     }
     
@@ -88,10 +89,11 @@ async function onBtnLoadMoreClick(evt) {
   refs.btnLoadMore.classList.add('btn__hidden');
   const searchValue = refs.formEl.searchQuery.value.trim()
   try {
-    const { hits } = await API.fetchImages(searchValue, numberPage);
+    const response = await API.fetchImages(searchValue, numberPage);
+    const { hits } = response;
     const serachArray = hits;
-   
-    if (serachArray.length < 40) {
+    // console.log(response)
+    if (response.total > 40) {
       refs.btnLoadMore.classList.remove('btn__hidden');
     }
     
@@ -100,5 +102,5 @@ async function onBtnLoadMoreClick(evt) {
     console.log(error);
   }
   // callFetchImages(searchName, numberPage);
-  console.log(numberPage);
+  // console.log(numberPage);
 }
